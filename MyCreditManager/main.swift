@@ -9,6 +9,15 @@
 
 import Foundation
 
+class Student
+{
+    var name: String
+    var classes: Array<ClassInfo>
+    init(name: String, classes: ClassInfo...){
+        self.name = name
+        self.classes = classes
+    }
+}
 class ClassInfo
 {
     var subject: String
@@ -20,22 +29,12 @@ class ClassInfo
     }
 }
 
-class Student
-{
-    var name: String
-    var classes: Array<ClassInfo>
-    init(name: String, classes: ClassInfo...){
-        self.name = name
-        self.classes = classes
-    }
-}
-
 //학생명부
 var students = [Student]()
+
 //프로그램 실행
 while true {
 
-    
     print("원하는 기능을 입력해주세요")
     print("1: 학생추가, 2: 학생삭제, 3: 성적추가(변경), 4: 성적삭제, 5: 평점보기, X: 종료")
 
@@ -58,16 +57,14 @@ while true {
         print("잘못된 입력입니다. 1~5 사이의 숫자 혹은 X를 입력하세요")
     }
     
-    print(students.count)
+    //print(students.count)
     //프로그램 종료
     if input == "X" {
         break
     }
 }
 
-/*
- 0번째 인덱스를 못 찾는다 why?
- */
+//기능
 func addStudent() {
     print("추가할 학생의 이름을 입력해주세요")
     let name = readLine()!
@@ -86,13 +83,9 @@ func addStudent() {
 func deleteStudent() {
     print("삭제할 학생의 이름을 입력해주세요")
     let name = readLine()!
-    if name.isEmpty {
-        print("잘못된 입력입니다. 다시 확인해주세요")
-        return
-    }
+    if !checkInput(input: name) {return}
     
     if let index = students.firstIndex(where: { $0.name == name }) {
-        print(students[index].name)
         students.removeAll(where:{ $0.name == name })
         print("\(name) 학생을 삭제하였습니다.")
     } else {
@@ -109,11 +102,13 @@ func addScore() {
     만약에 학생의 성적 중 해당 과목이 존재하면 기존 점수가 갱신됩니다.
     """)
     let input = readLine()!
+    if !checkInput(input: input) {return}
+    
     let info = input.components(separatedBy: " ")
     let name = info[0]
     let subject = info[1]
     let grade = info[2]
-    if input.isEmpty || name.isEmpty || subject.isEmpty || grade.isEmpty {
+    if name.isEmpty || subject.isEmpty || grade.isEmpty {
         print("잘못된 입력입니다. 다시 확인해주세요")
         return
     }
@@ -142,10 +137,12 @@ func deleteScore() {
     만약에 학생의 성적 중 해당 과목이 존재하면 기존 점수가 갱신됩니다.
     """)
     let input = readLine()!
+    if !checkInput(input: input) {return}
+    
     let info = input.components(separatedBy: " ")
     let name = info[0]
     let subject = info[1]
-    if input.isEmpty || name.isEmpty || subject.isEmpty {
+    if name.isEmpty || subject.isEmpty {
         print("잘못된 입력입니다. 다시 확인해주세요")
         return
     }
